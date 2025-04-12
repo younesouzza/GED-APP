@@ -13,7 +13,7 @@ function Login() {
     password: '',
     firstName: '',
     lastName: '',
-    name: '' // Added name field
+    name: ''
   });
 
   const handleInputChange = (e) => {
@@ -41,37 +41,55 @@ function Login() {
     setError('');
     
     try {
-      // Update endpoints to match your backend
       const endpoint = isLogin ? '/api/auth/login' : '/api/auth/register';
       
-      // Create a copy of the form data for submission
-      let submitData = {...formData};
+      // Create data object based on form type
+      let submitData;
       
-      // For registration, ensure name field exists
-      if (!isLogin && !submitData.name) {
-        if (submitData.firstName || submitData.lastName) {
-          submitData.name = `${submitData.firstName || ''} ${submitData.lastName || ''}`.trim();
-        } else if (submitData.username) {
-          submitData.name = submitData.username;
-        } else {
-          setError('Please provide a name');
+      if (isLogin) {
+        // For login, we only need email and password
+        submitData = {
+          email: formData.email,
+          password: formData.password
+        };
+      } else {
+        // For registration, ensure required fields
+        if (!formData.username) {
+          setError('Username is required');
           return;
         }
+        
+        // Create a valid name if not already set
+        let name = formData.name;
+        if (!name || name.trim() === '') {
+          if (formData.firstName || formData.lastName) {
+            name = `${formData.firstName || ''} ${formData.lastName || ''}`.trim();
+          } else {
+            name = formData.username; // Use username as fallback for name
+          }
+        }
+        
+        submitData = {
+          username: formData.username,
+          name: name,
+          email: formData.email,
+          password: formData.password
+        };
       }
       
       const response = await axios.post(`http://localhost:5000${endpoint}`, submitData);
       
       localStorage.setItem('token', response.data.token);
-      console.log(response.data);
+      console.log('Response:', response.data);
       
       alert(isLogin ? 'Login Successful!' : 'Sign Up Successful!');
       
       // Navigate to dashboard after successful login/signup
       navigate('/dashboard');
     } catch (error) {
-      const errorMsg = error.response?.data?.message || 'An unexpected error occurred';
+      const errorMsg = error.response?.data?.message || 'invalid Email or Password';
       setError(errorMsg);
-      console.error('Authentication error:', errorMsg);
+      console.error('Authentication error:', error);
     }
   };
 

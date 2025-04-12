@@ -5,14 +5,26 @@ const User = require('../models/user');
 // @route   POST /api/auth/register
 // @access  Public
 exports.register = asyncHandler(async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, username } = req.body;
+
+  // Validate required fields
+  if (!username) {
+    res.status(400);
+    throw new Error('Username is required');
+  }
 
   // Check if user exists
   const userExists = await User.findOne({ email });
-
   if (userExists) {
     res.status(400);
     throw new Error('User already exists');
+  }
+
+  // Check if username is already taken
+  const usernameExists = await User.findOne({ username });
+  if (usernameExists) {
+    res.status(400);
+    throw new Error('Username is already taken');
   }
 
   // Create user
@@ -20,6 +32,7 @@ exports.register = asyncHandler(async (req, res) => {
     name,
     email,
     password,
+    username
   });
 
   if (user) {
@@ -29,6 +42,7 @@ exports.register = asyncHandler(async (req, res) => {
         _id: user._id,
         name: user.name,
         email: user.email,
+        username: user.username,
         role: user.role,
         token: user.getSignedJwtToken(),
       },
@@ -73,6 +87,7 @@ exports.login = asyncHandler(async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
+      username: user.username,
       role: user.role,
       token: user.getSignedJwtToken(),
     },
@@ -91,6 +106,7 @@ exports.getMe = asyncHandler(async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
+      username: user.username,
       role: user.role,
     },
   });

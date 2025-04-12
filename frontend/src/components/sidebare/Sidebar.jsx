@@ -1,6 +1,6 @@
 
 import "./Sidebar.css"
-import {LineStyle , Folder, CreateNewFolder} from '@mui/icons-material';
+import {Home , Folder, CreateNewFolder} from '@mui/icons-material';
 
 export default function Sidebare() {
   return (
@@ -10,7 +10,7 @@ export default function Sidebare() {
           <h3 className="sidebarTitle">Dashboard</h3>
           <ul className="sidebarList">
             <li className="sidebarListItem active">
-              <LineStyle className="sidebarIcon"/>
+              <Home className="sidebarIcon"/>
               Home
             </li>
             <li className="sidebarListItem">
@@ -26,10 +26,10 @@ export default function Sidebare() {
           </ul>
         </div>
         <div className="sidebarMenu">
-          <h3 className="sidebarTitle">Dashboard</h3>
+          <h3 className="sidebarTitle">Menu</h3>
           <ul className="sidebarList">
-            <li className="sidebarListItem active">
-              <LineStyle className="sidebarIcon"/>
+            <li className="sidebarListItem ">
+              <Home className="sidebarIcon"/>
               Home
             </li>
             <li className="sidebarListItem">

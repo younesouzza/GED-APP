@@ -2,6 +2,8 @@ import React from 'react'
 import Topbare from '../../components/topbare/Topbare'
 import Sidebare from '../../components/sidebare/Sidebar'
 import "./dashboard.css"
+import Home from './homePage/Home'
+
 //import { Dashboard } from '@mui/icons-material'
 
 function Dashboard() {
@@ -10,12 +12,8 @@ function Dashboard() {
       <Topbare/>
       <div className='container'>
         <Sidebare/>
-        <div className='others'>
-          other pageq
-          
-
-
-        </div>
+        <Home/>
+       
         
        
         

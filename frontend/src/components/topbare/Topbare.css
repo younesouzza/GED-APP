@@ -6,6 +6,7 @@
     position: sticky;
     top: 0;
     z-index: 999;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 .topbarewrapper{
     height: 100%;
@@ -13,6 +14,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    
 }
 .topbarIconsContainer{
     position:  relative;
@@ -54,3 +56,6 @@
     border-radius: 50%;
     cursor: pointer;
 }
+
+  
+  

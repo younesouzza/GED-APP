@@ -1,6 +1,6 @@
 
 import "./Sidebar.css"
-import {Home , Folder, CreateNewFolder} from '@mui/icons-material';
+import {Home , Folder, CreateNewFolder, Inbox, Person2, Logout} from '@mui/icons-material';
 
 export default function Sidebare() {
   return (
@@ -29,16 +29,16 @@ export default function Sidebare() {
           <h3 className="sidebarTitle">Menu</h3>
           <ul className="sidebarList">
             <li className="sidebarListItem ">
-              <Home className="sidebarIcon"/>
-              Home
+              <Inbox className="sidebarIcon"/>
+              Inbox
             </li>
             <li className="sidebarListItem">
-              <Folder className="sidebarIcon"/>
-              files
+              <Person2 className="sidebarIcon"/>
+              Profile
             </li>
             <li className="sidebarListItem">
-              <CreateNewFolder className="sidebarIcon"/>
-              create new file
+              <Logout className="sidebarIcon"/>
+              Log out
             </li>
           
             

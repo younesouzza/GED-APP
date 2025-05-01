@@ -1,10 +1,17 @@
 import React from 'react';
 import './home.css';
-// Material UI Icons
-import {Description,Send,AccessTime,MoreHoriz,DriveFolderUpload} from '@mui/icons-material';
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
+import {Description,Send,MoreHoriz,DriveFolderUpload} from '@mui/icons-material';
 
 
 const Home = () => {
+   const navigate = useNavigate();
+  
+    
+   const handleNavigation = (path) => {
+    navigate(path);};
   return (
     <div className="homeContainer">
       {/* Welcome Header */}
@@ -18,7 +25,10 @@ const Home = () => {
         <div className="widget">
           <div className="widgetTitle">
             <h2>Recent Uploads</h2>
-            <button className="viewAllBtn">View All</button>
+            <Link to='/dashboard/files' className='viewAllBtn'>
+            <button className="viewAllBtn" >View All</button>
+            </Link>
+            
           </div>
           <div className="widgetContent">
             <FileItem 
@@ -48,7 +58,9 @@ const Home = () => {
         <div className="widget">
           <div className="widgetTitle">
             <h2>Last Messages</h2>
+            <Link to='/dashboard/inbox' className='viewAllBtn'>
             <button className="viewAllBtn">View All</button>
+            </Link>
           </div>
           <div className="widgetContent">
             <MessageItem 
@@ -73,26 +85,25 @@ const Home = () => {
       {/* Quick Actions */}
       <div className="quickActionsContainer">
         <h2 className="sectionTitle">Quick Actions</h2>
-        <div className="actionsGrid">
-          <ActionCard 
-            title="Resume Editing" 
-            icon={<AccessTime fontSize="medium" />} 
-            color="#dcfce7"
-            textColor="#16a34a"
-          />
+        <div className="actionsGrid"  >
           
-          <ActionCard 
-            title="Send files" 
-            icon={<Send fontSize="medium" />} 
-            color="#f3e8ff"
-            textColor="#9333ea"
+          <div  onClick={() => handleNavigation("/dashboard/inbox")} >
+            <ActionCard 
+              title="Send files" 
+              icon={<Send fontSize="medium" />} 
+              color="#f3e8ff"
+              textColor="#9333ea"
           />
-          <ActionCard 
-            title="Upload new Documents" 
-            icon={<DriveFolderUpload fontSize="medium" />} 
-            color="#ffedd5"
-            textColor="#ea580c"
-          />
+          </div>
+          <div  onClick={() => handleNavigation("/dashboard/newFile")}>
+            <ActionCard 
+              title="Upload new Documents" 
+              icon={<DriveFolderUpload fontSize="medium" />} 
+              color="#ffedd5"
+              textColor="#ea580c"
+            />
+          </div>
+          
         </div>
       </div>
     </div>

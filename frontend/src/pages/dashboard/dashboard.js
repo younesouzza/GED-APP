@@ -2,9 +2,9 @@ import React from 'react'
 import Topbare from '../../components/topbare/Topbare'
 import Sidebare from '../../components/sidebare/Sidebar'
 import "./dashboard.css"
-import Home from './homePage/home'
+import { Outlet } from 'react-router-dom'
 
-//import { Dashboard } from '@mui/icons-material'
+
 
 function Dashboard() {
   return (
@@ -12,7 +12,7 @@ function Dashboard() {
       <Topbare/>
       <div className='container'>
         <Sidebare/>
-        <Home/>
+        <Outlet/>
        
         
        

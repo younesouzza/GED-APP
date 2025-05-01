@@ -79,8 +79,9 @@ function Login() {
       
       const response = await axios.post(`http://localhost:5000${endpoint}`, submitData);
       
-      localStorage.setItem('token', response.data.token);
+      localStorage.setItem('token', response.data.data.token);
       console.log('Response:', response.data);
+      console.log('Token stored:', response.data.data.token);
       
       alert(isLogin ? 'Login Successful!' : 'Sign Up Successful!');
       

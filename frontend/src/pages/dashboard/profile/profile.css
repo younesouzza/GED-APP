@@ -1,0 +1,289 @@
+/* profile.css */
+.profilePage {
+  background-color: #fff;
+  flex: 4;
+  display: flex;
+  justify-content: center;
+  align-items: center; /* center vertically */
+  padding: 2rem;
+  min-height: 100vh; /* full screen */
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.profileContainer {
+  background: #fff;
+  padding: 2.5rem 3rem;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 900px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+  min-height: 100vh; /* make it almost full page height */
+  display: flex;
+  flex-direction: column;
+}
+
+.profileHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+/* Updated avatar styles to match the reference image */
+.avatarNew {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.avatarCircle {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background-color: #f0e6ff; /* Light purple background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.personIcon {
+  color: #8c6bc0; /* Purple icon color */
+  font-size: 48px; /* Larger icon */
+}
+
+.editProfileWrapper {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}
+
+.editProfileBtn {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  padding: 0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.editProfileBtn svg {
+  font-size: 16px;
+  color: #8c6bc0; /* Purple icon color */
+}
+
+.editProfileBtn span {
+  display: none; /* Hide the "Edit Profile" text */
+}
+
+.avatarName {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #666;
+}
+
+.profileHeader h2 {
+  margin-top: 0.5rem;
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #222;
+}
+
+.userStatus {
+  font-size: 0.95rem;
+  color: #666;
+  margin-top: 0.5rem;
+}
+
+.stats {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.statCard {
+  background: #fafafa;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  width: 260px;
+  height: 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.statCard h4 {
+  font-size: 0.95rem;
+  color: #444;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.statCard p {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #222;
+  margin: 5px 0 0;
+}
+
+.infoSection {
+  margin-top: 2rem;
+}
+
+.infoSection h3 {
+  margin-bottom: 1.5rem;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #222;
+}
+
+.infoItem {
+  background: #fafafa;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 0.8rem 1.2rem;
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.infoItem label {
+  font-weight: 600;
+  font-size: 1rem;
+  color: #444;
+  margin-right: 0.5rem;
+}
+
+.infoContent {
+  display: flex;
+  align-items:center;
+  gap: 0.5rem;
+}
+
+.infoContent span {
+  font-size: 1rem;
+  color: #333;
+}
+
+.editBtn {
+  background: #e0d7f8;
+  color: #5e35b1;
+  font-weight: 600;
+  border: none;
+  border-radius: 20px;
+  padding: 0.4rem 1rem;
+  display: flex;
+  align-items: center;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.editBtn:hover {
+  background: #d1c4e9;
+}
+
+.profileActions {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.saveBtn {
+  background-color: #5e35b1;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  padding: 0.7rem 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.saveBtn:hover {
+  background-color: #512da8;
+}
+
+.cancelBtn {
+  background-color: #eee;
+  color: #555;
+  border: none;
+  border-radius: 12px;
+  padding: 0.7rem 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.cancelBtn:hover {
+  background-color: #ddd;
+}
+
+.passwordChangeForm {
+  width: 100%;
+}
+
+.formGroup {
+  margin-bottom: 12px;
+}
+
+.formGroup label {
+  display: block;
+  margin-bottom: 4px;
+  font-weight: normal;
+}
+
+.editInput {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  width: 100%;
+  font-size: 0.95rem;
+}
+
+.formActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.actionBtn {
+  padding: 6px 10px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.confirmBtn {
+  background-color: #5e35b1;
+  color: white;
+}
+
+.infoContent.editing {
+  display: flex;
+  flex-direction: column;
+  width: 60%;
+}
+
+.editActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 8px;
+}

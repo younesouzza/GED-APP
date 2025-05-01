@@ -1,0 +1,504 @@
+.inboxPage {
+    flex: 4;
+    background-color: #fff;
+    padding: 24px;
+    position: relative;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  }
+  
+  .inboxHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .inboxHeader h1 {
+    font-size: 24px;
+    color: #2c3e50;
+    margin: 0;
+    font-weight: 500;
+  }
+  
+  .inboxActions {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .primaryButton {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 16px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    display: flex;
+    align-items: center;
+  }
+  
+  .primaryButton:hover {
+    background-color: #2980b9;
+  }
+  
+  .secondaryButton {
+    background-color: white;
+    color: #3498db;
+    border: 1px solid #3498db;
+    border-radius: 4px;
+    padding: 8px 16px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    display: flex;
+    align-items: center;
+  }
+  
+  .secondaryButton:hover {
+    background-color: #f8f9fa;
+  }
+  
+  .secondaryButton:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+  
+  .messageFilters {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+  
+  .filterTabs {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .filterTab {
+    background-color: transparent;
+    border: none;
+    padding: 8px 12px;
+    font-size: 14px;
+    color: #7f8c8d;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+  }
+  
+  .filterTab:hover {
+    color: #2c3e50;
+  }
+  
+  .filterTab.active {
+    color: #3498db;
+    border-bottom: 2px solid #3498db;
+  }
+  
+  .search-container {
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+  
+  .search-icon {
+    position: absolute;
+    left: 10px;
+    color: #7f8c8d;
+  }
+  
+  .search-input {
+    border: 1px solid #dfe6e9;
+    border-radius: 20px;
+    padding: 8px 12px 8px 35px;
+    font-size: 14px;
+    width: 220px;
+    outline: none;
+  }
+  
+  .messagesList {
+    flex: 1;
+    background-color: white;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+    margin-bottom: 15px;
+    min-height: 200px;
+    position: relative;
+  }
+  
+  .messageItem {
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    border-bottom: 1px solid #f1f2f6;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    position: relative;
+  }
+  
+  .messageItem:hover {
+    background-color: #f8f9fa;
+  }
+  
+  .messageItem.unread {
+    background-color: #ebf5fb;
+  }
+  
+  .messageItem.selected {
+    background-color: #e3f2fd;
+  }
+  
+  .messageItem.flagged {
+    position: relative;
+  }
+  
+  .messageItem.flagged::after {
+    content: "★";
+    color: #f39c12;
+    position: absolute;
+    right: 10px;
+    top: 8px;
+    font-size: 14px;
+  }
+  
+  .messageDot {
+    width: 20px;
+  }
+  
+  .unreadDot {
+    display: block;
+    width: 8px;
+    height: 8px;
+    background-color: #3498db;
+    border-radius: 50%;
+  }
+  
+  .messageSender {
+    width: 150px;
+    font-weight: 500;
+    color: #2c3e50;
+  }
+  
+  .messageSubject {
+    flex: 1;
+    color: #34495e;
+    display: flex;
+    align-items: center;
+  }
+  
+  .attachmentIndicator {
+    display: inline-flex;
+    align-items: center;
+    color: #7f8c8d;
+  }
+  
+  .messageDate {
+    width: 100px;
+    text-align: right;
+    color: #7f8c8d;
+    font-size: 13px;
+  }
+  
+  .messageActions {
+    width: 100px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 5px;
+    visibility: hidden;
+  }
+  
+  .messageItem:hover .messageActions {
+    visibility: visible;
+  }
+  
+  .iconButton {
+    background: transparent;
+    border: none;
+    color: #7f8c8d;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+  }
+  
+  .iconButton:hover {
+    background-color: #f1f2f6;
+    color: #34495e;
+  }
+  
+  .moreOptionsContainer {
+    position: relative;
+  }
+  
+  .moreMenu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: white;
+    border-radius: 4px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 150px;
+    z-index: 10;
+  }
+  
+  .menuItem {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 8px 12px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 14px;
+    color: #34495e;
+  }
+  
+  .menuItem:hover {
+    background-color: #f8f9fa;
+  }
+  
+  .messagePreview {
+    background-color: white;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 15px;
+  }
+  
+  .previewHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+  
+  .previewHeader h2 {
+    margin: 0;
+    font-size: 18px;
+    color: #2c3e50;
+  }
+  
+  .previewActions {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .messageInfo {
+    border-top: 1px solid #f1f2f6;
+    border-bottom: 1px solid #f1f2f6;
+    padding: 15px 0;
+    margin-bottom: 15px;
+  }
+  
+  .infoItem {
+    display: flex;
+    margin-bottom: 8px;
+  }
+  
+  .infoLabel {
+    width: 60px;
+    color: #7f8c8d;
+    font-weight: 500;
+  }
+  
+  .infoValue {
+    color: #34495e;
+  }
+  
+  .messageContent {
+    line-height: 1.6;
+    color: #34495e;
+  }
+  
+  .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+  }
+  
+  .paginationButton {
+    background-color: white;
+    color: #3498db;
+    border: 1px solid #dfe6e9;
+    border-radius: 4px;
+    padding: 8px 12px;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  
+  .paginationButton:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  .paginationInfo {
+    color: #7f8c8d;
+    font-size: 14px;
+  }
+  
+  .emptyState {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    color: #7f8c8d;
+    font-style: italic;
+  }
+  
+  .modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .composeModal {
+    background-color: white;
+    border-radius: 4px;
+    width: 500px;
+    max-width: 90%;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  .modalHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    border-bottom: 1px solid #f1f2f6;
+  }
+  
+  .modalHeader h2 {
+    margin: 0;
+    font-size: 16px;
+    color: #2c3e50;
+  }
+  
+  .closeButton {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: #7f8c8d;
+  }
+  
+  .formGroup {
+    margin: 12px 16px;
+  }
+  
+  .formGroup label {
+    display: block;
+    margin-bottom: 4px;
+    font-weight: 500;
+    color: #2c3e50;
+    font-size: 14px;
+  }
+  
+  .formGroup input,
+  .formGroup textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #dfe6e9;
+    border-radius: 4px;
+    font-size: 14px;
+    font-family: inherit;
+  }
+  
+  .formGroup textarea {
+    resize: vertical;
+  }
+  
+  .formActions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 12px 16px;
+    border-top: 1px solid #f1f2f6;
+  }
+  
+  
+  .attachmentGroup {
+    margin-bottom: 8px;
+  }
+  
+  .fileUploadContainer {
+    display: inline-block;
+  }
+  
+  .fileUploadLabel {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    color: #3498db;
+    font-size: 14px;
+    cursor: pointer;
+    transition: color 0.2s;
+    padding: 4px 8px;
+    border: 1px solid #dfe6e9;
+    border-radius: 4px;
+    background-color: white;
+  }
+  
+  .fileUploadLabel:hover {
+    background-color: #f8f9fa;
+  }
+  
+  .fileUploadInput {
+    display: none;
+  }
+  
+  .attachmentChips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+  }
+  
+  .attachmentChip {
+    display: flex;
+    align-items: center;
+    background-color: #f1f2f6;
+    border-radius: 12px;
+    padding: 4px 8px;
+    font-size: 12px;
+    max-width: 100%;
+  }
+  
+  .attachmentName {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: #34495e;
+  }
+  
+  .chipRemoveButton {
+    background: none;
+    border: none;
+    color: #7f8c8d;
+    cursor: pointer;
+    padding: 0;
+    margin-left: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+  }
+  
+  .chipRemoveButton:hover {
+    background-color: #e0e0e0;
+    color: #34495e;
+  }

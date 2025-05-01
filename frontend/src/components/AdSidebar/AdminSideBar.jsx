@@ -1,8 +1,9 @@
-import { useNavigate } from "react-router-dom";
-import "./Sidebar.css";
-import { Home, Folder, CreateNewFolder, Inbox, Person2, Logout } from "@mui/icons-material";
+import React from 'react'
+import { useNavigate } from 'react-router-dom';
+import './adminSideBar.css'
+import { Home,  CreateNewFolder, Inbox, Person2, Logout, ImageOutlined, ShowChart } from "@mui/icons-material";
 
-export default function Sidebar() {
+export default function AdminSideBar() {
   const navigate = useNavigate();
 
   // Function to handle navigation
@@ -28,7 +29,7 @@ export default function Sidebar() {
             {/* Home */}
             <li
               className="sidebarListItem"
-              onClick={() => handleNavigation("/dashboard")}
+              onClick={() => handleNavigation("")}
             >
               <Home className="sidebarIcon" />
               Home
@@ -37,16 +38,16 @@ export default function Sidebar() {
             {/* Files */}
             <li
               className="sidebarListItem"
-              onClick={() => handleNavigation("/dashboard/files")}
+              onClick={() => handleNavigation("/admin/analytics")}
             >
-              <Folder className="sidebarIcon" />
-              Files
+              <ShowChart className="sidebarIcon" />
+              Analytics
             </li>
 
             {/* Create New File */}
             <li
               className="sidebarListItem"
-              onClick={() => handleNavigation("/dashboard/newFile")}
+              onClick={() => handleNavigation("")}
             >
               <CreateNewFolder className="sidebarIcon" />
               Create New File
@@ -60,7 +61,7 @@ export default function Sidebar() {
             {/* Inbox */}
             <li
               className="sidebarListItem"
-              onClick={() => handleNavigation("/dashboard/inbox")}
+              onClick={() => handleNavigation("")}
             >
               <Inbox className="sidebarIcon" />
               Inbox
@@ -69,7 +70,7 @@ export default function Sidebar() {
             {/* Profile */}
             <li
               className="sidebarListItem"
-              onClick={() => handleNavigation("/dashboard/profile")}
+              onClick={() => handleNavigation("")}
             >
               <Person2 className="sidebarIcon" />
               Profile

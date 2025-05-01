@@ -1,0 +1,265 @@
+.newFilePage {
+    flex: 4;
+    background-color: #f9fafb;
+    padding: 24px;
+  }
+  
+  
+  .newFileHeader {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 24px;
+  }
+  
+  .newFileHeader h1 {
+    font-size: 24px;
+    font-weight: 600;
+    color: #1f2937;
+    margin: 16px 0 0 0;
+  }
+  
+  .backButton {
+    display: flex;
+    align-items: center;
+    color: #4b5563;
+    text-decoration: none;
+    font-size: 14px;
+    width: fit-content;
+    margin-bottom: 8px;
+    transition: color 0.2s ease;
+  }
+  
+  .backButton:hover {
+    color: #3b82f6;
+  }
+  
+  .backButton span {
+    margin-left: 4px;
+  }
+  
+  
+  .uploadContainer {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .uploadCard {
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    width: 100%;
+    max-width: 9000px;
+    overflow: hidden;
+    padding: 24px;
+  }
+  
+  
+  .dropZone {
+    border: 2px dashed #d1d5db;
+    border-radius: 12px;
+    padding: 40px 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-bottom: 24px;
+    background-color: #f9fafb;
+    position: relative;
+  }
+  
+  .dropZone:hover {
+    border-color: #3b82f6;
+    background-color: #f0f7ff;
+  }
+  
+  .dropZone.dragging {
+    border-color: #3b82f6;
+    background-color: #eff6ff;
+  }
+  
+  .dropZone.hasFile {
+    background-color: #f0f7ff;
+    border-color: #93c5fd;
+  }
+  
+  .fileInput {
+    position: absolute;
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    z-index: -1;
+  }
+  
+  
+  .uploadInstructions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .uploadIcon {
+    color: #3b82f6;
+    font-size: 48px;
+    margin-bottom: 16px;
+  }
+  
+  .uploadInstructions h3 {
+    margin: 8px 0;
+    font-weight: 500;
+    color: #1f2937;
+  }
+  
+  .uploadInstructions p {
+    margin: 8px 0;
+    color: #6b7280;
+  }
+  
+  .supportedFormats {
+    font-size: 12px;
+    margin-top: 16px !important;
+  }
+  
+ 
+  .selectedFile {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    border-radius: 8px;
+    background-color: #ffffff;
+  }
+  
+  .filePreviewIcon {
+    color: #3b82f6;
+    margin-right: 16px;
+  }
+  
+  .fileInfo {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+  }
+  
+  .fileName {
+    font-weight: 500;
+    color: #1f2937;
+    margin-bottom: 4px;
+    word-break: break-all;
+  }
+  
+  .fileSize {
+    color: #6b7280;
+    font-size: 14px;
+  }
+  
+  
+  .formFields {
+    margin-top: 24px;
+  }
+  
+  .formGroup {
+    margin-bottom: 20px;
+  }
+  
+  .formGroup label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #4b5563;
+  }
+  
+  .formGroup input,
+  .formGroup textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 16px;
+    transition: border-color 0.2s ease;
+  }
+  
+  .formGroup input:focus,
+  .formGroup textarea:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  }
+  
+  .formGroup textarea {
+    resize: vertical;
+    min-height: 80px;
+  }
+  
+  .submitContainer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 32px;
+  }
+  
+  .uploadButton {
+    background-color: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-width: 150px;
+    text-align: center;
+  }
+  
+  .uploadButton:hover:not(:disabled) {
+    background-color: #2563eb;
+  }
+  
+  .uploadButton:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+  
+  .uploadButton.uploading {
+    background-color: #93c5fd;
+  }
+  
+  .uploadButton.success {
+    background-color: #10b981;
+  }
+  .formGroup label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #333;
+  }
+  
+  .formGroup select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 14px;
+    background-color: #fff;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    transition: border-color 0.2s;
+  }
+  
+  .formGroup select:focus {
+    border-color: #3f51b5;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(63, 81, 181, 0.2);
+  }
+  
+  
+  /* Responsive styling */
+  @media (max-width: 768px) {
+    .uploadCard {
+      padding: 16px;
+    }
+    
+    .dropZone {
+      padding: 24px 16px;
+    }
+  }

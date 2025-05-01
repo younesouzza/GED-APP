@@ -1,9 +1,8 @@
-import React from "react";
-import './Topbare.css';
+import './adminTopBar.css';
 import { useNavigate } from "react-router-dom";
 import {NotificationsNone,Settings } from '@mui/icons-material';
 
-export default function Topbare() {
+export default function AdminTopbar() {
     const navigate = useNavigate();
 
   
@@ -14,6 +13,7 @@ export default function Topbare() {
     <div className="topbare">
         <div className="topbarewrapper">
             <div className="topLeft">
+                <span className='title'>Admin</span>
                 
             </div>
             
@@ -24,7 +24,7 @@ export default function Topbare() {
                     
 
                 </div>
-                <div className="topbarIconsContainer" onClick={() => handleNavigation("/dashboard/Profile")}>
+                <div className="topbarIconsContainer" onClick={() => handleNavigation("")}>
                     <Settings/>
                     
                 </div>

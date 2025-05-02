@@ -83,7 +83,7 @@ function Login() {
       console.log('Response:', response.data);
       console.log('Token stored:', response.data.data.token);
       
-      alert(isLogin ? 'Login Successful!' : 'Sign Up Successful!');
+      //alert(isLogin ? 'Login Successful!' : 'Sign Up Successful!');
       
       // Navigate to dashboard after successful login/signup
       navigate('/dashboard');

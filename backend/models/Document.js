@@ -15,7 +15,7 @@ const DocumentSchema = new mongoose.Schema(
     documentType: {
       type: String,
       required: [true, 'Please specify document type'],
-      enum: ['Documents', 'Images', 'Videos', 'Other'],
+      enum: ['document', 'image', 'video', 'other'],  // Updated lowercase values
     },
     owner: {
       type: mongoose.Schema.Types.ObjectId,

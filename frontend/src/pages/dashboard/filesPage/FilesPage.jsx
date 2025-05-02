@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./filesPage.css";
 import DescriptionIcon from '@mui/icons-material/Description';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -13,53 +13,106 @@ import ImageIcon from '@mui/icons-material/Image';
 import ArticleIcon from '@mui/icons-material/Article';
 import TableChartIcon from '@mui/icons-material/TableChart';
 import SlideshowIcon from '@mui/icons-material/Slideshow';
+import VideoFileIcon from '@mui/icons-material/VideoFile';
+import documentService from "../../../services/documment"; // Import the document service
 
 export default function FilesPage() {
-  // Sample files data - in a real app, this would come from an API
-  const [files, setFiles] = useState([
-    { id: 1, title: "Project Proposal", date: "Apr 10, 2025, 04:30 PM", size: "2.44 MB", type: "document" },
-    { id: 2, title: "Quarterly Report", date: "Apr 9, 2025, 12:15 PM", size: "1.22 MB", type: "spreadsheet" },
-    { id: 3, title: "Team Photo", date: "Apr 8, 2025, 06:45 PM", size: "3.66 MB", type: "image" },
-    { id: 4, title: "Product Presentation", date: "Apr 7, 2025, 11:30 AM", size: "4.88 MB", type: "presentation" },
-    { id: 5, title: "Marketing Strategy", date: "Apr 6, 2025, 09:15 AM", size: "1.78 MB", type: "document" },
-    { id: 6, title: "Budget Forecast", date: "Apr 5, 2025, 03:45 PM", size: "0.98 MB", type: "spreadsheet" }
-  ]);
-
+  
+  const [files, setFiles] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
   const [showEditModal, setShowEditModal] = useState(false);
-  const [editFormData, setEditFormData] = useState({ title: "" });
+  const [editFormData, setEditFormData] = useState({ title: "", description: "" });
   const [viewMode, setViewMode] = useState("grid"); // grid or list
   const [sortField, setSortField] = useState("date");
   const [sortDirection, setSortDirection] = useState("descending");
   const [searchTerm, setSearchTerm] = useState("");
+  const [filterType, setFilterType] = useState("all");
+
+  // Fetch documents on component mount
+  useEffect(() => {
+    fetchDocuments();
+  }, []);
+
+  const fetchDocuments = async () => {
+    try {
+      setLoading(true);
+      const response = await documentService.getAllDocuments();
+      
+      // Map backend document structure to frontend file structure
+      const mappedFiles = response.data.data.map(doc => ({
+        id: doc._id,
+        title: doc.title,
+        description: doc.description || "",
+        date: new Date(doc.createdAt).toLocaleString(),
+        size: `${(doc.fileSize / (1024 * 1024)).toFixed(2)} MB`,
+        type: doc.documentType,
+        filePath: doc.filePath,
+        fileName: doc.fileName,
+        classification: doc.classification
+      }));
+      
+      setFiles(mappedFiles);
+      setError(null);
+    } catch (err) {
+      console.error("Error fetching documents:", err);
+      setError("Failed to load files. Please try again later.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleSelectFile = (fileId) => {
     setSelectedFile(selectedFile === fileId ? null : fileId);
   };
 
-  const handleDeleteFile = (fileId, e) => {
+  const handleDeleteFile = async (fileId, e) => {
     e.stopPropagation();
-    setFiles(files.filter(file => file.id !== fileId));
-    if (selectedFile === fileId) {
-      setSelectedFile(null);
+    
+    if (!window.confirm("Are you sure you want to delete this file?")) {
+      return;
+    }
+    
+    try {
+      await documentService.deleteDocument(fileId);
+      setFiles(files.filter(file => file.id !== fileId));
+      if (selectedFile === fileId) {
+        setSelectedFile(null);
+      }
+    } catch (err) {
+      console.error("Error deleting document:", err);
+      alert("Failed to delete file. Please try again.");
     }
   };
 
   const handleEditClick = (file, e) => {
     e.stopPropagation();
-    setEditFormData({ title: file.title });
+    setEditFormData({ 
+      title: file.title,
+      description: file.description || "" 
+    });
     setShowEditModal(true);
     setSelectedFile(file.id);
   };
 
-  const handleEditSubmit = (e) => {
+  const handleEditSubmit = async (e) => {
     e.preventDefault();
-    setFiles(files.map(file => 
-      file.id === selectedFile 
-        ? { ...file, title: editFormData.title } 
-        : file
-    ));
-    setShowEditModal(false);
+    try {
+      await documentService.updateDocument(selectedFile, editFormData);
+      
+      // Update local state
+      setFiles(files.map(file => 
+        file.id === selectedFile 
+          ? { ...file, title: editFormData.title, description: editFormData.description } 
+          : file
+      ));
+      
+      setShowEditModal(false);
+    } catch (err) {
+      console.error("Error updating document:", err);
+      alert("Failed to update file. Please try again.");
+    }
   };
 
   const handleChange = (e) => {
@@ -80,10 +133,19 @@ export default function FilesPage() {
     setSearchTerm(e.target.value);
   };
 
-  // Filter files based on search term
-  const filteredFiles = files.filter(file => 
-    file.title.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const handleFilterChange = (e) => {
+    setFilterType(e.target.value);
+  };
+
+  // Filter files based on search term and file type
+  const filteredFiles = files.filter(file => {
+    const matchesSearch = file.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (file.description && file.description.toLowerCase().includes(searchTerm.toLowerCase()));
+    
+    const matchesType = filterType === "all" || file.type === filterType;
+    
+    return matchesSearch && matchesType;
+  });
 
   // Sort files based on sort field and direction
   const sortedFiles = [...filteredFiles].sort((a, b) => {
@@ -108,16 +170,22 @@ export default function FilesPage() {
     switch (type) {
       case "document":
         return <ArticleIcon className="fileTypeIcon document" />;
-      case "spreadsheet":
-        return <TableChartIcon className="fileTypeIcon spreadsheet" />;
       case "image":
         return <ImageIcon className="fileTypeIcon image" />;
+      case "video":
+        return <VideoFileIcon className="fileTypeIcon video" />;
+      case "spreadsheet":
+        return <TableChartIcon className="fileTypeIcon spreadsheet" />;
       case "presentation":
         return <SlideshowIcon className="fileTypeIcon presentation" />;
       default:
         return <DescriptionIcon className="fileTypeIcon" />;
     }
   };
+
+  if (loading) {
+    return <div className="loading">Loading files...</div>;
+  }
 
   return (
     <div className="filepage">
@@ -136,7 +204,6 @@ export default function FilesPage() {
               onChange={handleSearchChange}
             />
           </div>
-          
         </div>
       </div>
 
@@ -177,14 +244,21 @@ export default function FilesPage() {
         </div>
 
         <div className="filter-options">
-          <select className="filter-dropdown">
+          <select 
+            className="filter-dropdown"
+            value={filterType}
+            onChange={handleFilterChange}
+          >
             <option value="all">All Files</option>
-            <option value="documents">Documents</option>
-            <option value="images">Images</option>
-            <option value="videos">Videos</option>
+            <option value="document">Documents</option>
+            <option value="image">Images</option>
+            <option value="video">Videos</option>
+            <option value="other">Other</option>
           </select>
         </div>
       </div>
+
+      {error && <div className="error-message">{error}</div>}
 
       <div className={`files-gallery ${viewMode}`}>
         {sortedFiles.map((file) => (
@@ -198,9 +272,11 @@ export default function FilesPage() {
             </div>
             <div className="file-info">
               <h3 className="file-title">{file.title}</h3>
+              {file.description && <p className="file-description">{file.description}</p>}
               <div className="file-details">
                 <span className="file-size">{file.size}</span>
                 <span className="file-date">{file.date}</span>
+                <span className="file-classification">{file.classification}</span>
               </div>
             </div>
             <div className="file-actions">
@@ -215,16 +291,17 @@ export default function FilesPage() {
         ))}
       </div>
 
-      {sortedFiles.length === 0 && (
+      {sortedFiles.length === 0 && !loading && (
         <div className="no-files">
           <p>No files found</p>
+          {filterType !== "all" && <p>Try changing your filter or search terms</p>}
         </div>
       )}
 
       {showEditModal && (
         <div className="modal-overlay">
           <div className="edit-modal">
-            <h2>Rename File</h2>
+            <h2>Edit File</h2>
             <form onSubmit={handleEditSubmit}>
               <div className="form-group">
                 <label htmlFor="title">File Name</label>
@@ -235,6 +312,16 @@ export default function FilesPage() {
                   value={editFormData.title}
                   onChange={handleChange}
                   required
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="description">Description</label>
+                <textarea
+                  id="description"
+                  name="description"
+                  value={editFormData.description}
+                  onChange={handleChange}
+                  rows="3"
                 />
               </div>
               <div className="modal-actions">

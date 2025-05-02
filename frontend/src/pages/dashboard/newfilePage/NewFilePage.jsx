@@ -3,10 +3,11 @@ import "./NewFilePage.css";
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { Link } from "react-router-dom";
-import axios from 'axios';
+import { Link, useNavigate } from "react-router-dom";
+import documentService from "../../../services/documment"; // Import the document service
 
 export default function NewFilePage() {
+  const navigate = useNavigate();
   const [file, setFile] = useState(null);
   const [fileDetails, setFileDetails] = useState({
     title: "",
@@ -18,6 +19,7 @@ export default function NewFilePage() {
   const [isDragging, setIsDragging] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadSuccess, setUploadSuccess] = useState(false);
+  const [uploadError, setUploadError] = useState("");
   const fileInputRef = useRef(null);
 
   const handleFileChange = (e) => {
@@ -25,6 +27,7 @@ export default function NewFilePage() {
     if (selectedFile) {
       setFile(selectedFile);
       
+      // Set the file title to the filename (without extension)
       const fileName = selectedFile.name.split('.').slice(0, -1).join('.');
       setFileDetails(prev => ({
         ...prev,
@@ -59,7 +62,7 @@ export default function NewFilePage() {
       const droppedFile = e.dataTransfer.files[0];
       setFile(droppedFile);
       
-      
+      // Set the file title to the filename (without extension)
       const fileName = droppedFile.name.split('.').slice(0, -1).join('.');
       setFileDetails(prev => ({
         ...prev,
@@ -71,15 +74,13 @@ export default function NewFilePage() {
   const handleUpload = async (e) => {
     e.preventDefault();
   
-    if (!file) return alert("Please select a file to upload");
-  
-    const token = localStorage.getItem("token");
-    console.log("Token being used:", token);
-
-    if (!token) {
-      alert("You must be logged in to upload files");
+    if (!file) {
+      setUploadError("Please select a file to upload");
       return;
     }
+  
+    // Reset error state
+    setUploadError("");
 
     const formData = new FormData();
     formData.append("file", file); 
@@ -92,38 +93,20 @@ export default function NewFilePage() {
     try {
       setIsUploading(true);
   
-      const res = await axios.post(
-        "http://localhost:5000/api/documents",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            "Authorization": `Bearer ${token}`
-          },
-        }
-      );
-  
-      console.log("Upload successful:", res.data);
+      await documentService.uploadDocument(formData);
+      
       setUploadSuccess(true);
+      
+      // Redirect after successful upload
+      setTimeout(() => {
+        navigate("/dashboard/files");
+      }, 2000);
+      
     } catch (err) {
-      console.error("Upload error status:", err.response?.status);
-      console.error("Upload error message:", err.response?.data);
-      alert(err.response?.data?.error || err.response?.data?.message || "Upload failed.");
+      console.error("Upload error:", err);
+      setUploadError(err.response?.data?.error || err.response?.data?.message || "Upload failed. Please try again.");
     } finally {
       setIsUploading(false);
-      if (uploadSuccess) {
-        setTimeout(() => {
-          setFile(null);
-          setFileDetails({
-            title: "",
-            subject: "",
-            description: "",
-            classification: "",
-            documentType: ""
-          });
-          setUploadSuccess(false);
-        }, 2000);
-      }
     }
   };
   
@@ -186,9 +169,11 @@ export default function NewFilePage() {
               )}
             </div>
 
+            {uploadError && <div className="errorMessage">{uploadError}</div>}
+
             <div className="formFields">
               <div className="formGroup">
-                <label htmlFor="title">Title</label>
+                <label htmlFor="title">Title*</label>
                 <input
                   type="text"
                   id="title"
@@ -201,19 +186,18 @@ export default function NewFilePage() {
               </div>
 
               <div className="formGroup">
-                <label htmlFor="subject">Subject</label>
+                <label htmlFor="subject">Subject*</label>
                 <input
                   type="text"
                   id="subject"
                   name="subject"
                   value={fileDetails.subject}
                   onChange={handleInputChange}
-                  placeholder="Enter subject "
+                  placeholder="Enter subject"
                   required
                 />
               </div>
 
-              
               <div className="formGroup">
                 <label htmlFor="documentType">Document Type*</label>
                 <select
@@ -224,15 +208,13 @@ export default function NewFilePage() {
                   required
                 >
                   <option value="">Select Document Type</option>
-                  <option value="Documents">Documents</option>
-                  <option value="Images">Images</option>
-                  <option value="Videos">Videos</option>
-                  
-                  <option value="Other">Other</option>
+                  <option value="document">Documents</option>
+                  <option value="image">Images</option>
+                  <option value="video">Videos</option>
+                  <option value="other">Other</option>
                 </select>
               </div>
 
-              
               <div className="formGroup">
                 <label htmlFor="classification">Classification*</label>
                 <select
@@ -246,7 +228,6 @@ export default function NewFilePage() {
                   <option value="Public">Public</option>
                   <option value="Private">Private</option>
                   <option value="Confidential">Confidential</option>
-                  
                 </select>
               </div>
 

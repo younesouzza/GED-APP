@@ -7,11 +7,13 @@ const UserSchema = new mongoose.Schema(
     username: {
       type: String,
       required: true,
-      unique: true
+      unique: true,
+      trim: true
     },
     name: {
       type: String,
       required: [true, 'Please add a name'],
+      trim: true
     },
     email: {
       type: String,
@@ -21,6 +23,8 @@ const UserSchema = new mongoose.Schema(
         /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
         'Please add a valid email',
       ],
+      trim: true,
+      lowercase: true
     },
     password: {
       type: String,
@@ -33,6 +37,20 @@ const UserSchema = new mongoose.Schema(
       enum: ['admin', 'standard', 'reviewer'],
       default: 'standard',
     },
+    avatar: {
+      type: String,
+      default: 'default.jpg'
+    },
+    uploads: {
+      type: Number,
+      default: 0
+    },
+    messages: {
+      type: Number,
+      default: 0
+    },
+    resetPasswordToken: String,
+    resetPasswordExpire: Date
   },
   {
     timestamps: true,
@@ -59,6 +77,23 @@ UserSchema.methods.getSignedJwtToken = function () {
 // Match user entered password to hashed password in database
 UserSchema.methods.matchPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
+};
+
+// Generate and hash password reset token
+UserSchema.methods.getResetPasswordToken = function() {
+  // Generate token
+  const resetToken = crypto.randomBytes(20).toString('hex');
+
+  // Hash token and set to resetPasswordToken field
+  this.resetPasswordToken = crypto
+    .createHash('sha256')
+    .update(resetToken)
+    .digest('hex');
+
+  // Set expire
+  this.resetPasswordExpire = Date.now() + 10 * 60 * 1000; // 10 minutes
+
+  return resetToken;
 };
 
 module.exports = mongoose.model('User', UserSchema);

@@ -26,25 +26,27 @@
     padding: 0px;
 }
 
-.sidebarListItem{
+.sidebarListItem {
     padding: 10px;
     cursor: pointer;
     display: flex;
     align-items: center;
     border-radius: 5px;
-    margin-bottom: 5px;
-}
-
-.sidebarListItem:hover {
-    background-color: rgb(228, 228, 228);
-}
-
-.sidebarListItem.active {
-    background-color: rgb(228, 228, 228);
-}
-
-
-.sidebarIcon{
-    margin-right: 5px;
-    font-size: 20px !important;
-}
+    transition: background-color 0.3s;
+    color: #555;
+  }
+  
+  .sidebarListItem.active {
+    background-color: #000000;
+    color: white;
+  }
+  .sidebarListItem:hover {
+    background-color: #000000;
+    color: white;
+  }
+  
+  
+  .sidebarIcon {
+    margin-right: 10px;
+  }
+  

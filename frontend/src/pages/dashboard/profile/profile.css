@@ -31,12 +31,10 @@
 }
 
 /* Updated avatar styles to match the reference image */
-.avatarNew {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 20px;
+.editIcon {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
 }
 
 .avatarCircle {
@@ -61,33 +59,38 @@
   bottom: 0;
 }
 
-.editProfileBtn {
-  background: white;
-  border: 1px solid #e0e0e0;
-  border-radius: 50%;
-  width: 32px;
-  height: 32px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  padding: 0;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+.editIcon {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
 }
 
-.editProfileBtn svg {
-  font-size: 16px;
-  color: #8c6bc0; /* Purple icon color */
+.editAvatarBtn {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: rgb(132, 112, 163);
+  border: 1px solid #ddd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
+
+.editAvatarBtn:hover {
+  background-color: #5f3b8b;
+}
+
 
 .editProfileBtn span {
   display: none; /* Hide the "Edit Profile" text */
 }
 
-.avatarName {
-  margin-top: 10px;
-  font-size: 14px;
-  color: #666;
+.usernameDisplay {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: #555;
 }
 
 .profileHeader h2 {

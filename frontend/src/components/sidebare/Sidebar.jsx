@@ -1,21 +1,17 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import "./Sidebar.css";
 import { Home, Folder, CreateNewFolder, Inbox, Person2, Logout } from "@mui/icons-material";
 
 export default function Sidebar() {
   const navigate = useNavigate();
+  const location = useLocation();
 
-  // Function to handle navigation
   const handleNavigation = (path) => {
     navigate(path);
   };
 
-  // Function to handle logout
   const handleLogout = () => {
-    // Clear the JWT token from localStorage (or sessionStorage if used)
     localStorage.removeItem("authToken");
-
-    // Redirect the user to the login page
     navigate("/login");
   };
 
@@ -25,27 +21,30 @@ export default function Sidebar() {
         <div className="sidebarMenu">
           <h3 className="sidebarTitle">Dashboard</h3>
           <ul className="sidebarList">
-            {/* Home */}
             <li
-              className="sidebarListItem"
+              className={`sidebarListItem ${
+                location.pathname === "/dashboard" ? "active" : ""
+              }`}
               onClick={() => handleNavigation("/dashboard")}
             >
               <Home className="sidebarIcon" />
               Home
             </li>
 
-            {/* Files */}
             <li
-              className="sidebarListItem"
+              className={`sidebarListItem ${
+                location.pathname === "/dashboard/files" ? "active" : ""
+              }`}
               onClick={() => handleNavigation("/dashboard/files")}
             >
               <Folder className="sidebarIcon" />
               Files
             </li>
 
-            {/* Create New File */}
             <li
-              className="sidebarListItem"
+              className={`sidebarListItem ${
+                location.pathname === "/dashboard/newFile" ? "active" : ""
+              }`}
               onClick={() => handleNavigation("/dashboard/newFile")}
             >
               <CreateNewFolder className="sidebarIcon" />
@@ -57,25 +56,26 @@ export default function Sidebar() {
         <div className="sidebarMenu">
           <h3 className="sidebarTitle">Menu</h3>
           <ul className="sidebarList">
-            {/* Inbox */}
             <li
-              className="sidebarListItem"
+              className={`sidebarListItem ${
+                location.pathname === "/dashboard/inbox" ? "active" : ""
+              }`}
               onClick={() => handleNavigation("/dashboard/inbox")}
             >
               <Inbox className="sidebarIcon" />
               Inbox
             </li>
 
-            {/* Profile */}
             <li
-              className="sidebarListItem"
+              className={`sidebarListItem ${
+                location.pathname === "/dashboard/profile" ? "active" : ""
+              }`}
               onClick={() => handleNavigation("/dashboard/profile")}
             >
               <Person2 className="sidebarIcon" />
               Profile
             </li>
 
-            {/* Log out */}
             <li className="sidebarListItem" onClick={handleLogout}>
               <Logout className="sidebarIcon" />
               Log Out

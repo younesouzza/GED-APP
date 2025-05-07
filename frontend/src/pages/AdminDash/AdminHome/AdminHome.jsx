@@ -1,6 +1,7 @@
 import React from 'react'
 import './adminHome.css'
 import {Person} from '@mui/icons-material';
+import FeaturedInfo from '../../../components/featuredInfo/FeaturedInfo';
 
 export default function AdminHome() {
   
@@ -12,6 +13,9 @@ export default function AdminHome() {
         <h1 className='WelcomeTitle'>Welcome Back</h1>
 
 
+      </div>
+      <div className="featuredInfos">
+        <FeaturedInfo/>
       </div>
       {/*last regestred membres*/}
       <div className="NewMembres">

@@ -1,24 +1,31 @@
-import React from 'react'
-import { useNavigate } from 'react-router-dom';
-import './adminSideBar.css'
-import { Home,  CreateNewFolder, Inbox, Person2, Logout, ImageOutlined, ShowChart } from "@mui/icons-material";
+import React from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import './adminSideBar.css';
+import {
+  Home,
+  ManageAccounts,
+  Folder,
+  Inbox,
+  Person2,
+  Logout,
+  ShowChart
+} from '@mui/icons-material';
 
 export default function AdminSideBar() {
   const navigate = useNavigate();
+  const location = useLocation();
 
-  // Function to handle navigation
   const handleNavigation = (path) => {
     navigate(path);
   };
 
-  // Function to handle logout
   const handleLogout = () => {
-    // Clear the JWT token from localStorage (or sessionStorage if used)
-    localStorage.removeItem("authToken");
-
-    // Redirect the user to the login page
-    navigate("/login");
+    localStorage.removeItem('authToken');
+    navigate('/login');
   };
+
+  // Helper to check if a path is active
+  const isActive = (path) => location.pathname === path;
 
   return (
     <div className="sidebar">
@@ -26,31 +33,37 @@ export default function AdminSideBar() {
         <div className="sidebarMenu">
           <h3 className="sidebarTitle">Dashboard</h3>
           <ul className="sidebarList">
-            {/* Home */}
+
             <li
-              className="sidebarListItem"
-              onClick={() => handleNavigation("")}
+              className={`sidebarListItem ${isActive('/admin') ? 'active' : ''}`}
+              onClick={() => handleNavigation('/admin')}
             >
               <Home className="sidebarIcon" />
               Home
             </li>
 
-            {/* Files */}
             <li
-              className="sidebarListItem"
-              onClick={() => handleNavigation("/admin/analytics")}
+              className={`sidebarListItem ${isActive('/admin/analytics') ? 'active' : ''}`}
+              onClick={() => handleNavigation('/admin/analytics')}
             >
               <ShowChart className="sidebarIcon" />
               Analytics
             </li>
 
-            {/* Create New File */}
             <li
-              className="sidebarListItem"
-              onClick={() => handleNavigation("")}
+              className={`sidebarListItem ${isActive('/admin/manageusers') ? 'active' : ''}`}
+              onClick={() => handleNavigation('/admin/manageusers')}
             >
-              <CreateNewFolder className="sidebarIcon" />
-              Create New File
+              <ManageAccounts className="sidebarIcon" />
+              Manage Users
+            </li>
+
+            <li
+              className={`sidebarListItem ${isActive('/admin/folders') ? 'active' : ''}`}
+              onClick={() => handleNavigation('/admin/folders')}
+            >
+              <Folder className="sidebarIcon" />
+              Manage Folders
             </li>
           </ul>
         </div>
@@ -58,25 +71,22 @@ export default function AdminSideBar() {
         <div className="sidebarMenu">
           <h3 className="sidebarTitle">Menu</h3>
           <ul className="sidebarList">
-            {/* Inbox */}
             <li
-              className="sidebarListItem"
-              onClick={() => handleNavigation("")}
+              className={`sidebarListItem ${isActive('/admin/inbox') ? 'active' : ''}`}
+              onClick={() => handleNavigation('/admin/inbox')}
             >
               <Inbox className="sidebarIcon" />
               Inbox
             </li>
 
-            {/* Profile */}
             <li
-              className="sidebarListItem"
-              onClick={() => handleNavigation("")}
+              className={`sidebarListItem ${isActive('/admin/profile') ? 'active' : ''}`}
+              onClick={() => handleNavigation('/admin/profile')}
             >
               <Person2 className="sidebarIcon" />
               Profile
             </li>
 
-            {/* Log out */}
             <li className="sidebarListItem" onClick={handleLogout}>
               <Logout className="sidebarIcon" />
               Log Out

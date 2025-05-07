@@ -42,10 +42,9 @@ function Login() {
     
     try {
       const endpoint = isLogin ? '/api/auth/login' : '/api/auth/register';
-      
-      // Create data object based on form type
+
+      // --- Data Preparation ---
       let submitData;
-      
       if (isLogin) {
         // For login, we only need email and password
         submitData = {
@@ -56,41 +55,149 @@ function Login() {
         // For registration, ensure required fields
         if (!formData.username) {
           setError('Username is required');
-          return;
+          return; // Stop submission if username is missing
         }
-        
-        // Create a valid name if not already set
+
+        // Create a valid 'name' field from firstName/lastName or fallback to username
         let name = formData.name;
         if (!name || name.trim() === '') {
           if (formData.firstName || formData.lastName) {
             name = `${formData.firstName || ''} ${formData.lastName || ''}`.trim();
           } else {
-            name = formData.username; // Use username as fallback for name
+            name = formData.username; // Use username as fallback for name if first/last are empty
           }
         }
-        
+
+        // Ensure name is not empty before submitting
+        if (!name) {
+            setError('Name could not be determined. Please provide first/last name or ensure username is set.');
+            return; // Stop if name is still empty
+        }
+
         submitData = {
           username: formData.username,
-          name: name,
+          name: name, // Use the constructed name
           email: formData.email,
           password: formData.password
         };
       }
-      
+      // --- End Data Preparation ---
+
+
+      // --- API Call ---
       const response = await axios.post(`http://localhost:5000${endpoint}`, submitData);
+      console.log("API Response Data:", response.data); // Log the whole response
+      // Add detailed logging for keys
+      if (response.data) {
+        console.log("Keys in response.data:", Object.keys(response.data));
+        if (response.data.data) {
+          console.log("Keys in response.data.data:", Object.keys(response.data.data));
+        } else {
+          console.log("response.data.data is missing or falsy.");
+        }
+      } else {
+        console.log("response.data is missing or falsy.");
+      }
+      // --- End API Call ---
+
+
+      // --- Process Response and Store Data ---
+      let token = null;
+      let userId = null;
+      let userRole = null;
+      let userIdPath = "Not Found";
+      let userRolePath = "Not Found";
+
+      if (response.data) {
+        // Try finding token
+        token = response.data.token || response.data.data?.token;
+        if (token) {
+          localStorage.setItem("token", token);
+          console.log("Token stored:", token);
+        } else {
+          console.warn("Token not found in response.data or response.data.data");
+        }
+
+        // Try finding userId in various common locations
+        const data = response.data;
+        const nestedData = response.data.data;
+
+        if (data.userId) { userId = data.userId; userIdPath = "response.data.userId"; }
+        else if (data.id) { userId = data.id; userIdPath = "response.data.id"; }
+        else if (data._id) { userId = data._id; userIdPath = "response.data._id"; }
+        else if (data.user?.id) { userId = data.user.id; userIdPath = "response.data.user.id"; }
+        else if (data.user?._id) { userId = data.user._id; userIdPath = "response.data.user._id"; }
+        else if (nestedData?.userId) { userId = nestedData.userId; userIdPath = "response.data.data.userId"; }
+        else if (nestedData?.id) { userId = nestedData.id; userIdPath = "response.data.data.id"; }
+        else if (nestedData?._id) { userId = nestedData._id; userIdPath = "response.data.data._id"; }
+        else if (nestedData?.user?.id) { userId = nestedData.user.id; userIdPath = "response.data.data.user.id"; }
+        else if (nestedData?.user?._id) { userId = nestedData.user._id; userIdPath = "response.data.data.user._id"; }
+
+        if (userId) {
+          localStorage.setItem("userId", userId);
+          console.log(`User ID stored: ${userId} (Found at: ${userIdPath})`);
+        } else {
+          console.error("User ID not found in any common location within the response:", response.data);
+        }
+
+        // Try finding user role in various common locations
+        if (data.role) { userRole = data.role; userRolePath = "response.data.role"; }
+        else if (data.user?.role) { userRole = data.user.role; userRolePath = "response.data.user.role"; }
+        else if (nestedData?.role) { userRole = nestedData.role; userRolePath = "response.data.data.role"; }
+        else if (nestedData?.user?.role) { userRole = nestedData.user.role; userRolePath = "response.data.data.user.role"; }
+        // Additional checks for variations in naming
+        else if (data.userRole) { userRole = data.userRole; userRolePath = "response.data.userRole"; }
+        else if (data.user?.userRole) { userRole = data.user.userRole; userRolePath = "response.data.user.userRole"; }
+        else if (nestedData?.userRole) { userRole = nestedData.userRole; userRolePath = "response.data.data.userRole"; }
+        else if (nestedData?.user?.userRole) { userRole = nestedData.user.userRole; userRolePath = "response.data.data.user.userRole"; }
+
+        if (userRole) {
+          localStorage.setItem("userRole", userRole);
+          console.log(`User Role stored: ${userRole} (Found at: ${userRolePath})`);
+        } else {
+          console.warn("User Role not found in response - defaulting to 'standard'");
+          localStorage.setItem("userRole", "standard"); // Default fallback
+          userRole = "standard";
+        }
+
+      } else {
+        console.error("API response.data is missing or falsy.");
+      }
       
-      localStorage.setItem('token', response.data.data.token);
-      console.log('Response:', response.data);
-      console.log('Token stored:', response.data.data.token);
-      
-      //alert(isLogin ? 'Login Successful!' : 'Sign Up Successful!');
-      
-      // Navigate to dashboard after successful login/signup
-      navigate('/dashboard');
+      // Proceed only if both token and userId were successfully found and stored
+      if (token && userId) {
+        // Navigate based on user role
+        if (userRole === "admin") {
+          navigate("/admin");
+        } else if (userRole === "reviewer") {
+          navigate("/dashboard");
+        } else {
+          // Default to standard dashboard for any other role
+          navigate("/sd-dashboard");
+        }
+      } else if (token && !userId) {
+        // If token found but userId missing, show specific error
+        setError("Authentication successful, but failed to retrieve user session information. Please try again or contact support.");
+        // Optional: Clear the potentially stored token if userId is essential
+        // localStorage.removeItem("token");
+      } else {
+        // Handle cases where token wasn't found or response was invalid
+        setError("Received an invalid response from the server. Please try again.");
+      }
+      // --- End Process Response ---
+
     } catch (error) {
-      const errorMsg = error.response?.data?.message || 'invalid Email or Password';
+      // --- Error Handling ---
+      // Log the detailed error object, especially error.response for API errors
+      console.error('Authentication error:', error.response || error);
+
+      // Extract a user-friendly message
+      const errorMsg = error.response?.data?.message // Prefer backend message
+                       || (isLogin ? 'Invalid Email or Password.' : 'Registration failed. Please check your details.') // Contextual fallback
+                       || 'An unexpected error occurred.'; // Generic fallback
+
       setError(errorMsg);
-      console.error('Authentication error:', error);
+      // --- End Error Handling ---
     }
   };
 
